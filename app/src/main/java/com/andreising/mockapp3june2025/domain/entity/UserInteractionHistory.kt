@@ -1,9 +1,9 @@
 package com.andreising.mockapp3june2025.domain.entity
 
-import java.time.LocalDate
+import java.util.Date
 
 data class UserInteractionHistory(
     val userId: Int,
     val type: InteractionType,
-    val dateList: List<LocalDate>
+    val dateList: List<Date>
 )

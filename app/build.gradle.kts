@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlinSymbolProcessing)
 }
 
 android {
@@ -56,4 +58,16 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.ktor.client.core) // Ktor-Core
+    implementation(libs.ktor.client.android) // Ktor-Engine
+
+    implementation(libs.kotlinx.serialization.json) // KotlinX Serialization (Convert JSON response to Kotlin Objects)
+    implementation(libs.ktor.serialization.kotlinx.json) // Ktor- To work with Serialization
+
+    implementation(libs.ktor.client.logging) // Logging (Optional)
+
+    implementation(libs.ktor.client.content.negotiation) // Serialization
+    implementation (libs.logback.classic)
+
 }
