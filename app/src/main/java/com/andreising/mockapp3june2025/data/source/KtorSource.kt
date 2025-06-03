@@ -10,9 +10,6 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 object KtorSource {
-    const val BASE_URL = "test.rikmasters.ru/api"
-    const val USERS = "/users/"
-    const val STATISTICS = "/statistics/"
     private const val NETWORK_TIME_OUT = 6_000L
 
     fun getHttpClient() = HttpClient(Android){

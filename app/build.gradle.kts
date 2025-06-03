@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlinSymbolProcessing)
+    alias(libs.plugins.dagger.hilt.android)
+    kotlin("kapt")
 }
 
 android {
@@ -59,15 +61,21 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.ktor.client.core) // Ktor-Core
-    implementation(libs.ktor.client.android) // Ktor-Engine
-
-    implementation(libs.kotlinx.serialization.json) // KotlinX Serialization (Convert JSON response to Kotlin Objects)
-    implementation(libs.ktor.serialization.kotlinx.json) // Ktor- To work with Serialization
-
-    implementation(libs.ktor.client.logging) // Logging (Optional)
-
-    implementation(libs.ktor.client.content.negotiation) // Serialization
+    //ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
     implementation (libs.logback.classic)
+
+    //serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    //dagger-hilt
+    implementation (libs.hilt.android)
+    implementation (libs.androidx.hilt.navigation.compose)
+    kapt (libs.hilt.compiler)
+    kapt (libs.androidx.hilt.compiler)
 
 }
