@@ -1,12 +1,9 @@
 package com.andreising.mockapp3june2025.presentation.screens.statistic.components.visitors
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,55 +14,42 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreising.mockapp3june2025.R
-import com.andreising.mockapp3june2025.presentation.theme.MockApp3June2025Theme
 import com.andreising.mockapp3june2025.presentation.utils.simple_graph.MonthlyChange
 import com.andreising.mockapp3june2025.presentation.utils.simple_graph.SimpleChart
 import com.andreising.mockapp3june2025.presentation.utils.visitor_by_day_graph.VisitorTrendChart
 import com.andreising.mockapp3june2025.presentation.utils.visitor_by_day_graph.VisitorTrendChartModel
-import kotlin.random.Random
 
 @Composable
-fun VisitorStatistic(visitorsList: List<Int>) {
+fun VisitorStatistic(
+    visitorsList: State<List<Int>>,
+    visitByDays: State<List<VisitorTrendChartModel>>
+) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
             text = stringResource(R.string.visitors),
             style = MaterialTheme.typography.titleMedium
         )
-        VisitorsCard(
-            monthlyChange = MonthlyChange.from(visitorsList),
-            valueList = visitorsList
-        )
-        VisitorsChartCard(
-            listOf(
-                VisitorTrendChartModel("01.08", 42, "1 августа", "42 пользователя"),
-                VisitorTrendChartModel("02.08", 76, "2 августа", "76 пользователей"),
-                VisitorTrendChartModel("03.08", 33, "3 августа", "33 пользователя"),
-                VisitorTrendChartModel("04.08", 89, "4 августа", "89 пользователей"),
-                VisitorTrendChartModel("05.08", 57, "5 августа", "57 пользователей"),
-                VisitorTrendChartModel("06.08", 24, "6 августа", "24 пользователя"),
-                VisitorTrendChartModel("07.08", 65, "7 августа", "65 пользователей")
-            )
-        )
+        VisitorsCard(visitorsList)
+        VisitorsChartCard(visitByDays)
     }
 }
 
 @Composable
-fun VisitorsChartCard(visitorsList: List<VisitorTrendChartModel>) {
+fun VisitorsChartCard(visitorsList: State<List<VisitorTrendChartModel>>) {
     Card(
         modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
     ) {
         VisitorTrendChart(
-            visitorsList = visitorsList,
+            visitorsList = visitorsList.value,
             mainColor = MaterialTheme.colorScheme.primary,
             outline = MaterialTheme.colorScheme.outline,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -74,7 +58,10 @@ fun VisitorsChartCard(visitorsList: List<VisitorTrendChartModel>) {
 }
 
 @Composable
-fun VisitorsCard(monthlyChange: MonthlyChange, valueList: List<Int>) {
+fun VisitorsCard(visitorsList: State<List<Int>>) {
+
+    val monthlyChange: MonthlyChange = MonthlyChange.from(visitorsList.value)
+    val valueList: List<Int> = visitorsList.value
     Card(
         modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -89,7 +76,7 @@ fun VisitorsCard(monthlyChange: MonthlyChange, valueList: List<Int>) {
                 modifier = Modifier
                     .weight(1f)
                     .padding(8.dp),
-                values = valueList,
+                values = if (valueList.size != 1) valueList else listOf(0, valueList.first()),
                 color = monthlyChange.color
             )
             Column(modifier = Modifier.weight(2f)) {
@@ -119,20 +106,6 @@ fun VisitorsCard(monthlyChange: MonthlyChange, valueList: List<Int>) {
                     ), style = MaterialTheme.typography.bodyMedium
                 )
             }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun VisitorsTest() {
-    MockApp3June2025Theme(darkTheme = false) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Red)
-        ) {
-            VisitorStatistic(List(6) { Random.nextInt(10000) })
         }
     }
 }

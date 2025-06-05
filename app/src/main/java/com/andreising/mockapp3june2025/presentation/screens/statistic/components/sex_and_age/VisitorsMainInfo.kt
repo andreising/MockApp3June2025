@@ -28,6 +28,7 @@ fun VisitorsMainInfo(users: List<User>) {
     val femalePercent = femaleCount.toFloat() / total
 
     val ageGroups = listOf(
+        "<18" to (1..18),
         "18-21" to (18..21),
         "22-25" to (22..25),
         "26-30" to (26..30),

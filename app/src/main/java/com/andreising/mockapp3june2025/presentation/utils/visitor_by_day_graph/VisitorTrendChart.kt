@@ -2,7 +2,7 @@ package com.andreising.mockapp3june2025.presentation.utils.visitor_by_day_graph
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -52,7 +52,7 @@ fun VisitorTrendChart(
 
     val values = visitorsList.map { it.value }
     val labels = visitorsList.map { it.label }
-    var tooltipIndex by remember { mutableStateOf<Int?>(null) }
+    var tooltipIndex by remember { mutableStateOf(0) }
     var points by remember { mutableStateOf(listOf<Offset>()) }
 
     BoxWithConstraints(modifier = modifier.fillMaxWidth()) {
@@ -66,18 +66,16 @@ fun VisitorTrendChart(
                 .height(240.dp)
                 .pointerInput(Unit) {
                     detectTapGestures(
-                        onLongPress = { offset ->
-                            tooltipIndex = getClosestPointIndex(size.width, offset.x, values.size)
+                        onPress = { offset ->
+                            tooltipIndex =
+                                getClosestPointIndex(size.width, offset.x, values.size) ?: 0
                         }
                     )
                 }
                 .pointerInput(Unit) {
-                    detectDragGesturesAfterLongPress(
-                        onDragEnd = { tooltipIndex = null },
-                        onDragCancel = { tooltipIndex = null }
-                    ) { change, _ ->
+                    detectDragGestures { change, _ ->
                         tooltipIndex =
-                            getClosestPointIndex(size.width, change.position.x, values.size)
+                            getClosestPointIndex(size.width, change.position.x, values.size) ?: 0
                     }
                 }
         ) {
@@ -106,7 +104,7 @@ fun VisitorTrendChart(
                 Offset(x, y)
             }
 
-            tooltipIndex?.let { index ->
+            tooltipIndex.let { index ->
                 points.getOrNull(index)?.let { pt ->
                     drawVerticalDashedLine(pt.x, topY, bottomY, mainColor)
                     drawHorizontalDashedLine(pt.y, width, outline)
@@ -136,7 +134,7 @@ fun VisitorTrendChart(
                 val paint = android.graphics.Paint().apply {
                     color = outline.toArgb()
                     textAlign = android.graphics.Paint.Align.CENTER
-                    textSize = 12.sp.toPx()
+                    textSize = 10.sp.toPx()
                     isAntiAlias = true
                 }
                 drawContext.canvas.nativeCanvas.drawText(
@@ -148,9 +146,9 @@ fun VisitorTrendChart(
             }
         }
 
-        tooltipIndex?.let { index ->
+        tooltipIndex.let { index ->
             ChartInfoCard(
-                labelTitle = visitorsList[index].labelTitle ,
+                labelTitle = visitorsList[index].labelTitle,
                 valueTitle = visitorsList[index].valueTitle,
                 point = points.getOrNull(index) ?: return@let,
                 canvasOffset = IntOffset(
@@ -239,25 +237,3 @@ private fun ChartInfoCard(
         }
     }
 }
-
-
-//@Preview
-//@Composable
-//fun VisitorTrendChartTest() {
-//    val visitorsMap = listOf(
-//        "06.06" to 42,
-//        "07.06" to 0,
-//        "08.06" to 23,
-//        "09.06" to 31,
-//        "10.06" to 45,
-//        "11.06" to 21,
-//        "12.06" to 32
-//    )
-//    Box(
-//        Modifier
-//            .fillMaxSize()
-//            .background(Color.LightGray)
-//    ) {
-//        VisitorTrendChart(visitorsList = visitorsMap)
-//    }
-//}
