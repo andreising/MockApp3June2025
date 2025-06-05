@@ -38,8 +38,8 @@ val Typography = Typography(
     titleMedium = TextStyle(
         fontFamily = MainFont,
         fontWeight = FontWeight.Bold,
-        fontSize = 20.sp,
-        lineHeight = 24.sp,
+        fontSize = 18.sp,
+        lineHeight = 22.sp,
         letterSpacing = 0.1.sp
     ),
     titleSmall = TextStyle(
