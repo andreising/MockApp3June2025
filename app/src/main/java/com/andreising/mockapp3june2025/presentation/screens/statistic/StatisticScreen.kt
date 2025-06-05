@@ -17,13 +17,16 @@ import com.andreising.mockapp3june2025.R
 import com.andreising.mockapp3june2025.presentation.screens.statistic.components.most_recent_visitors.MostRecentVisitors
 import com.andreising.mockapp3june2025.presentation.screens.statistic.components.sex_and_age.SexAndAgeChart
 import com.andreising.mockapp3june2025.presentation.screens.statistic.components.visitors.VisitorStatistic
-import kotlin.random.Random
 
 @Composable
 fun StatisticScreen() {
     val viewModel: StatisticScreenViewModel = hiltViewModel()
 
-    val userList = viewModel.userListFlow.collectAsState()
+    val viewedUsers = viewModel.viewedUsersCountFlow.collectAsState()
+
+    val visitorList = viewModel.visitorTrendChartListFlow.collectAsState()
+
+    val mostRecentVisitors = viewModel.mostRecentVisitorsFlow.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.loadData()
@@ -41,8 +44,8 @@ fun StatisticScreen() {
                 style = MaterialTheme.typography.titleLarge
             )
         }
-        item { VisitorStatistic(List(6) { Random.nextInt(10000) }) }
-        item { MostRecentVisitors(userList) }
-        item { SexAndAgeChart(emptyList()) }
+        item { VisitorStatistic(viewedUsers, visitorList) }
+        item { MostRecentVisitors(mostRecentVisitors) }
+        item { SexAndAgeChart(mostRecentVisitors) }
     }
 }
