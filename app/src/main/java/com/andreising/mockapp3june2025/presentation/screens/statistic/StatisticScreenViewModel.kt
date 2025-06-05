@@ -7,14 +7,15 @@ import com.andreising.mockapp3june2025.domain.entity.User
 import com.andreising.mockapp3june2025.domain.entity.UserInteractionHistory
 import com.andreising.mockapp3june2025.domain.usecases.interations.GetUserInteractionHistoryListUseCase
 import com.andreising.mockapp3june2025.domain.usecases.users.GetUsersListUseCase
+import com.andreising.mockapp3june2025.presentation.utils.UiState
 import com.andreising.mockapp3june2025.presentation.utils.visitor_by_day_graph.VisitorTrendChartBuilder
 import com.andreising.mockapp3june2025.presentation.utils.visitor_by_day_graph.VisitorTrendChartModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -27,12 +28,15 @@ class StatisticScreenViewModel @Inject constructor(
     private val getUserInteractionHistoryListUseCase: GetUserInteractionHistoryListUseCase
 ) : ViewModel() {
 
-    private val _userListFlow = MutableSharedFlow<List<User>>()
-    val userListFlow: SharedFlow<List<User>> = _userListFlow.asSharedFlow()
+    private val _userListFlow = MutableStateFlow<List<User>>(emptyList())
+    val userListFlow: StateFlow<List<User>> = _userListFlow.asStateFlow()
 
-    private val _interactionListFlow = MutableSharedFlow<List<UserInteractionHistory>>()
-    val interactionListFlow: SharedFlow<List<UserInteractionHistory>> =
-        _interactionListFlow.asSharedFlow()
+    private val _interactionListFlow = MutableStateFlow<List<UserInteractionHistory>>(emptyList())
+    val interactionListFlow: StateFlow<List<UserInteractionHistory>> =
+        _interactionListFlow.asStateFlow()
+
+    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     val viewedUsersCountFlow: StateFlow<List<Int>> = combine(
         userListFlow,
@@ -43,26 +47,17 @@ class StatisticScreenViewModel @Inject constructor(
             .map { it.userId }
             .toSet()
         listOf(users.count { it.id in viewedUserIds })
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = emptyList()
-    )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val visitorTrendChartListFlow: StateFlow<List<VisitorTrendChartModel>> =
-        interactionListFlow
-            .map { list ->
-                list.filter { it.type == InteractionType.VIEW }
-                    .flatMap { it.dateList }
-                    .groupingBy { it }
-                    .eachCount()
-                    .toSortedMap()
-                    .map { VisitorTrendChartBuilder.getModelByDateAndInt(it.toPair()) }
-            }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = emptyList()
-            )
+        interactionListFlow.map { list ->
+            list.filter { it.type == InteractionType.VIEW }
+                .flatMap { it.dateList }
+                .groupingBy { it }
+                .eachCount()
+                .toSortedMap()
+                .map { VisitorTrendChartBuilder.getModelByDateAndInt(it.toPair()) }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val mostRecentVisitorsFlow: StateFlow<List<User>> =
         combine(userListFlow, interactionListFlow) { users, interactions ->
@@ -72,35 +67,33 @@ class StatisticScreenViewModel @Inject constructor(
                     userInteractions.sumOf { it.dateList.size }
                 }
                 .toList()
-                .sortedByDescending { (_, count) -> count }
-                .map { (userId, _) -> userId }
+                .sortedByDescending { it.second }
+                .map { it.first }
 
-            val result = mutableListOf<User>()
-            val userById = users.associateBy { it.id }
-
-            sortedUserIds.forEach { userId ->
-                userById[userId]?.let { user ->
-                    result.add(user)
-                }
-            }
-
-            result
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
+            sortedUserIds.mapNotNull { userId -> users.find { it.id == userId } }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun loadData() = viewModelScope.launch {
-        launch {
-            getUsersListUseCase().onSuccess {
-                _userListFlow.emit(it)
+        _uiState.value = UiState.Loading
+        try {
+            val users = async { getUsersListUseCase() }
+            val interactions = async { getUserInteractionHistoryListUseCase() }
+
+            val userResult = users.await()
+            val interactionResult = interactions.await()
+
+            if (userResult.isSuccess && interactionResult.isSuccess) {
+                _userListFlow.value = userResult.getOrThrow()
+                _interactionListFlow.value = interactionResult.getOrThrow()
+                _uiState.value = UiState.Success
+            } else {
+                val msg = userResult.exceptionOrNull()?.message
+                    ?: interactionResult.exceptionOrNull()?.message
+                    ?: "Unknown error"
+                _uiState.value = UiState.Error(msg)
             }
-        }
-        launch {
-            getUserInteractionHistoryListUseCase().onSuccess {
-                _interactionListFlow.emit(it)
-            }
+        } catch (e: Exception) {
+            _uiState.value = UiState.Error(e.localizedMessage ?: "Unexpected error")
         }
     }
 }

@@ -18,11 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.andreising.mockapp3june2025.R
 
 @Composable
-fun PeriodSelector(selected: String, onSelect: (String) -> Unit) {
-    val periods = listOf("today", "week", "month", "all_time")
+fun PeriodSelector(periods: List<Int>, selected: Int, onSelect: (Int) -> Unit) {
     val scrollState = rememberScrollState()
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -47,15 +45,7 @@ fun PeriodSelector(selected: String, onSelect: (String) -> Unit) {
                     contentAlignment = Alignment.Companion.Center
                 ) {
                     Text(
-                        text = stringResource(
-                            when (period) {
-                                "today" -> R.string.today
-                                "week" -> R.string.week
-                                "month" -> R.string.month
-                                "all_time" -> R.string.all_time
-                                else -> error("Illegal button state")
-                            }
-                        ),
+                        text = stringResource(period),
                         style = MaterialTheme.typography.titleSmall,
                         color = if (isActive) MaterialTheme.colorScheme.onPrimary
                         else MaterialTheme.colorScheme.onSurfaceVariant
