@@ -1,6 +1,7 @@
-package com.andreising.mockapp3june2025.presentation.screens.statistic.components
+package com.andreising.mockapp3june2025.presentation.screens.statistic.components.visitors
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,30 +34,41 @@ import kotlin.random.Random
 
 @Composable
 fun VisitorStatistic(visitorsList: List<Int>) {
-    val visitorsMap = listOf(
-        VisitorTrendChartModel("01.08", 42, "1 августа", "42 пользователя"),
-        VisitorTrendChartModel("02.08", 76, "2 августа", "76 пользователей"),
-        VisitorTrendChartModel("03.08", 33, "3 августа", "33 пользователя"),
-        VisitorTrendChartModel("04.08", 89, "4 августа", "89 пользователей"),
-        VisitorTrendChartModel("05.08", 57, "5 августа", "57 пользователей"),
-        VisitorTrendChartModel("06.08", 24, "6 августа", "24 пользователя"),
-        VisitorTrendChartModel("07.08", 65, "7 августа", "65 пользователей")
-    )
-    Column {
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
             text = stringResource(R.string.visitors),
             style = MaterialTheme.typography.titleMedium
         )
-        Spacer(modifier = Modifier.height(12.dp))
         VisitorsCard(
             monthlyChange = MonthlyChange.from(visitorsList),
             valueList = visitorsList
         )
-        Spacer(modifier = Modifier.height(28.dp))
+        VisitorsChartCard(
+            listOf(
+                VisitorTrendChartModel("01.08", 42, "1 августа", "42 пользователя"),
+                VisitorTrendChartModel("02.08", 76, "2 августа", "76 пользователей"),
+                VisitorTrendChartModel("03.08", 33, "3 августа", "33 пользователя"),
+                VisitorTrendChartModel("04.08", 89, "4 августа", "89 пользователей"),
+                VisitorTrendChartModel("05.08", 57, "5 августа", "57 пользователей"),
+                VisitorTrendChartModel("06.08", 24, "6 августа", "24 пользователя"),
+                VisitorTrendChartModel("07.08", 65, "7 августа", "65 пользователей")
+            )
+        )
+    }
+}
+
+@Composable
+fun VisitorsChartCard(visitorsList: List<VisitorTrendChartModel>) {
+    Card(
+        modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
         VisitorTrendChart(
-            visitorsList = visitorsMap,
+            visitorsList = visitorsList,
             mainColor = MaterialTheme.colorScheme.primary,
-            outline = MaterialTheme.colorScheme.outline
+            outline = MaterialTheme.colorScheme.outline,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
     }
 }

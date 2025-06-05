@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import com.andreising.mockapp3june2025.data.dto.StatisticDTO
 import com.andreising.mockapp3june2025.data.dto.UserDTO
 import com.andreising.mockapp3june2025.domain.entity.InteractionType
+import com.andreising.mockapp3june2025.domain.entity.Sex
 import com.andreising.mockapp3june2025.domain.entity.User
 import com.andreising.mockapp3june2025.domain.entity.UserInteractionHistory
 import java.text.SimpleDateFormat
@@ -13,7 +14,7 @@ fun UserDTO.toDomain(): User {
     val avatar = files.firstOrNull { it.type == "avatar" }?.url ?: error("Avatar url is nullable")
     return User(
         id = id,
-        sex = sex,
+        sex = Sex.get(sex),
         username = username,
         isOnline = isOnline,
         age = age,
