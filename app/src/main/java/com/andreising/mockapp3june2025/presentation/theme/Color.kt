@@ -14,5 +14,6 @@ val White =  Color(0xFFF6F6F6)
 val Green =  Color(0xFF43B077)
 val Red =  Color(0xFFF14A60)
 val Orange =  Color(0xFFFF2E00)
+val SecondaryOrange =  Color(0xFFF99963)
 val Gray =  Color(0x33000000)
 

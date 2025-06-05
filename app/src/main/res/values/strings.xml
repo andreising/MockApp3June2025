@@ -5,4 +5,11 @@
     <string name="visitors_unchanged">Количество посетителей в этом месяце не изменилось</string>
     <string name="visitors_increased">Количество посетителей в этом месяце выросло</string>
     <string name="visitors_decreased">Количество посетителей в этом месяце упало</string>
+    <string name="sex_and_age">Пол и возраст</string>
+    <string name="males">Мужчины</string>
+    <string name="females">Женщины</string>
+    <string name="today">Сегодня</string>
+    <string name="week">Неделя</string>
+    <string name="month">Месяц</string>
+    <string name="all_time">Все время</string>
 </resources>
