@@ -14,11 +14,12 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
+    primary = Orange,
     secondary = PurpleGrey40,
     tertiary = Pink40,
     surfaceVariant = ContainerWhite,
-    background = White
+    background = White,
+    outline = Gray
 )
 
 @Composable
