@@ -30,21 +30,21 @@ fun AgeGroupStats(
         val femaleCount = groupUsers.count { it.sex == Sex.FEMALE }
 
         Row(
-            modifier = Modifier.Companion.fillMaxWidth(),
-            verticalAlignment = Alignment.Companion.CenterVertically
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = label,
-                color = Color.Companion.Black,
+                color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.titleSmall,
-                textAlign = TextAlign.Companion.Start,
-                modifier = Modifier.Companion
+                textAlign = TextAlign.Start,
+                modifier = Modifier
                     .weight(0.3f)
                     .padding(start = 16.dp)
             )
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.Companion.weight(0.7f)
+                modifier = Modifier.weight(0.7f)
             ) {
                 GenderBar(maleCount, total, maleColor)
                 GenderBar(femaleCount, total, femaleColor)

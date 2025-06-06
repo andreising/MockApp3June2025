@@ -15,7 +15,7 @@ import com.andreising.mockapp3june2025.presentation.utils.visitor_by_day_graph.V
 @Composable
 fun VisitorsChartCard(visitorsList: State<List<VisitorTrendChartModel>>) {
     Card(
-        modifier = Modifier.Companion.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
@@ -24,7 +24,7 @@ fun VisitorsChartCard(visitorsList: State<List<VisitorTrendChartModel>>) {
             visitorsList = visitorsList.value,
             mainColor = MaterialTheme.colorScheme.primary,
             outline = MaterialTheme.colorScheme.outline,
-            modifier = Modifier.Companion.padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
     }
 }

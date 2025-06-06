@@ -16,7 +16,8 @@ fun MostRecentVisitors(userList: State<List<User>>) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
             text = stringResource(R.string.most_recent_visitors),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onPrimary
         )
         ColumnMostRecentVisitors(userList.value)
     }

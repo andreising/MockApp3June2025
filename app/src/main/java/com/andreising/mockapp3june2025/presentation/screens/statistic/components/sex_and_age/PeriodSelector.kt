@@ -24,7 +24,7 @@ fun PeriodSelector(periods: List<Int>, selected: Int, onSelect: (Int) -> Unit) {
     val scrollState = rememberScrollState()
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.Companion.horizontalScroll(scrollState)
+        modifier = Modifier.horizontalScroll(scrollState)
     ) {
         periods.forEach { period ->
             val isActive = selected == period
@@ -42,7 +42,7 @@ fun PeriodSelector(periods: List<Int>, selected: Int, onSelect: (Int) -> Unit) {
                     modifier = Modifier.Companion
                         .padding(horizontal = 16.dp)
                         .fillMaxHeight(),
-                    contentAlignment = Alignment.Companion.Center
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = stringResource(period),

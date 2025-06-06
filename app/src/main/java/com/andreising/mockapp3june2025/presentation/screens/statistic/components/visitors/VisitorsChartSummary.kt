@@ -11,17 +11,17 @@ import com.andreising.mockapp3june2025.presentation.utils.simple_graph.MonthlyCh
 @Composable
 fun VisitorsChartSummary(values: List<Int>, monthlyChange: MonthlyChange) {
     Row(
-        modifier = Modifier.Companion
+        modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
         VisitorsChartLine(
             values = if (values.size != 1) values else listOf(0, values.first()),
             color = monthlyChange.color,
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .weight(1f)
                 .padding(8.dp)
         )
-        VisitorsInfoPanel(monthlyChange, values.lastOrNull() ?: 0, Modifier.Companion.weight(2f))
+        VisitorsInfoPanel(monthlyChange, values.lastOrNull() ?: 0, Modifier.weight(2f))
     }
 }

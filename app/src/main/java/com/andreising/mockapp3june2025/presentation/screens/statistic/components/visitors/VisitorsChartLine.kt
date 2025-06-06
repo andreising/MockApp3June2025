@@ -9,7 +9,7 @@ import com.andreising.mockapp3june2025.presentation.utils.simple_graph.SimpleCha
 fun VisitorsChartLine(
     values: List<Int>,
     color: Color,
-    modifier: Modifier = Modifier.Companion
+    modifier: Modifier = Modifier
 ) {
     SimpleChart(
         modifier = modifier,

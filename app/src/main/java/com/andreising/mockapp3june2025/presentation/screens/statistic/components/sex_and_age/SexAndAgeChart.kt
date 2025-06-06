@@ -17,7 +17,8 @@ fun SexAndAgeChart(userList: State<List<User>>) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
             text = stringResource(R.string.sex_and_age),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onPrimary
         )
         PeriodSelector(
             listOf(R.string.today, R.string.week, R.string.month, R.string.all_time),

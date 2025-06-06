@@ -61,7 +61,7 @@ fun UserItem(
             modifier = Modifier.weight(1f),
             text = "${user.username}, ${user.age}",
             style = MaterialTheme.typography.titleSmall,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onPrimary
         )
         Icon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
