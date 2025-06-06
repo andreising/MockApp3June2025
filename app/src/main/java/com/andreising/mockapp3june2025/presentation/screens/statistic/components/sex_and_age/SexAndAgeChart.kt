@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.andreising.mockapp3june2025.R
 import com.andreising.mockapp3june2025.domain.entity.User
+import kotlin.collections.listOf
 
 @Composable
 fun SexAndAgeChart(userList: State<List<User>>) {
@@ -18,7 +19,10 @@ fun SexAndAgeChart(userList: State<List<User>>) {
             text = stringResource(R.string.sex_and_age),
             style = MaterialTheme.typography.titleMedium
         )
-        PeriodSelector("all_time") {}
+        PeriodSelector(
+            listOf(R.string.today, R.string.week, R.string.month, R.string.all_time),
+            R.string.all_time
+        ) {}
         VisitorsMainInfo(userList.value)
     }
 }

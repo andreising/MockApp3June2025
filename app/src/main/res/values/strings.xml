@@ -13,4 +13,7 @@
     <string name="month">Месяц</string>
     <string name="all_time">Все время</string>
     <string name="most_recent_visitors">Чаще всех посещают Ваш профиль</string>
+    <string name="by_day">По дням</string>
+    <string name="by_week">По неделям</string>
+    <string name="by_months">По месяцам</string>
 </resources>
