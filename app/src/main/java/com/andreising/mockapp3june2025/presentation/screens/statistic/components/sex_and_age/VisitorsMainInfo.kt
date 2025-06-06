@@ -39,13 +39,13 @@ fun VisitorsMainInfo(users: List<User>) {
     )
 
     Card(
-        modifier = Modifier.Companion.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
     ) {
         Column(
-            modifier = Modifier.Companion.padding(vertical = 24.dp),
+            modifier = Modifier.padding(vertical = 24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             CircleSexAndAgeChart(
@@ -54,7 +54,7 @@ fun VisitorsMainInfo(users: List<User>) {
                 maleColor = maleColor,
                 femaleColor = femaleColor,
                 strokeWidth = 8.dp,
-                modifier = Modifier.Companion.height(160.dp)
+                modifier = Modifier.height(160.dp)
             )
             SexRatioRow(maleColor, femaleColor, malePercent, femalePercent)
             AgeGroupStats(ageGroups, users, maleColor, femaleColor)

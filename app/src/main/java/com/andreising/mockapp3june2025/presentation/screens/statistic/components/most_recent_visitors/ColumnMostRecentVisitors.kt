@@ -11,7 +11,7 @@ import com.andreising.mockapp3june2025.domain.entity.User
 @Composable
 fun ColumnMostRecentVisitors(userList: List<User>) {
     Card(
-        modifier = Modifier.Companion.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )

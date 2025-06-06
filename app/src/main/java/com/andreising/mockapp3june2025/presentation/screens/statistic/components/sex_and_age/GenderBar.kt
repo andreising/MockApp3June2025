@@ -20,16 +20,16 @@ import kotlin.math.roundToInt
 fun GenderBar(count: Int, total: Int, color: Color) {
     val percent = (count * 1f / total).coerceAtLeast(0.02f)
     Row(
-        modifier = Modifier.Companion.fillMaxWidth(),
-        verticalAlignment = Alignment.Companion.CenterVertically
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .fillMaxWidth(percent)
                 .height(5.dp)
                 .background(color, shape = MaterialTheme.shapes.small)
         )
-        Spacer(modifier = Modifier.Companion.width(8.dp))
+        Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = "${(count * 100f / total).roundToInt()}%",
             style = MaterialTheme.typography.labelSmall

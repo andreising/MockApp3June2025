@@ -11,11 +11,11 @@ import com.andreising.mockapp3june2025.presentation.utils.simple_graph.MonthlyCh
 
 @Composable
 fun VisitorsCard(visitorsList: State<List<Int>>) {
-    val monthlyChange = MonthlyChange.Companion.from(visitorsList.value)
+    val monthlyChange = MonthlyChange.from(visitorsList.value)
     val valueList = visitorsList.value
 
     Card(
-        modifier = Modifier.Companion.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         VisitorsChartSummary(valueList, monthlyChange)

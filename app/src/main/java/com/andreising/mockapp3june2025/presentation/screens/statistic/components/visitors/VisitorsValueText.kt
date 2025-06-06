@@ -16,15 +16,15 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun VisitorsValueText(color: Color, value: Int, iconId: Int?) {
-    Row(verticalAlignment = Alignment.Companion.CenterVertically) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = value.toString(),
             style = MaterialTheme.typography.titleMedium
         )
         iconId?.let {
-            Spacer(modifier = Modifier.Companion.width(4.dp))
+            Spacer(modifier = Modifier.width(4.dp))
             Icon(
-                modifier = Modifier.Companion.height(16.dp),
+                modifier = Modifier.height(16.dp),
                 painter = painterResource(it),
                 contentDescription = null,
                 tint = color
