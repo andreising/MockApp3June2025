@@ -29,7 +29,7 @@ fun PeriodSelector(periods: List<Int>, selected: Int, onSelect: (Int) -> Unit) {
         periods.forEach { period ->
             val isActive = selected == period
             Card(
-                modifier = Modifier.Companion
+                modifier = Modifier
                     .height(32.dp)
                     .clickable { onSelect(period) },
                 shape = MaterialTheme.shapes.extraLarge,
@@ -39,7 +39,7 @@ fun PeriodSelector(periods: List<Int>, selected: Int, onSelect: (Int) -> Unit) {
                 )
             ) {
                 Box(
-                    modifier = Modifier.Companion
+                    modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxHeight(),
                     contentAlignment = Alignment.Center
@@ -47,8 +47,8 @@ fun PeriodSelector(periods: List<Int>, selected: Int, onSelect: (Int) -> Unit) {
                     Text(
                         text = stringResource(period),
                         style = MaterialTheme.typography.titleSmall,
-                        color = if (isActive) MaterialTheme.colorScheme.onPrimary
-                        else MaterialTheme.colorScheme.onSurfaceVariant
+                        color = if (!isActive) MaterialTheme.colorScheme.onPrimary
+                        else MaterialTheme.colorScheme.onSecondary
                     )
                 }
             }
